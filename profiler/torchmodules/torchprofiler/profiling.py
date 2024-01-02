@@ -130,7 +130,8 @@ class Profiling(object):
                     start_time = time.time()
                     pid = os.getpid()
                     result = this_profiler.forward_original_methods[self](*input)
-                    torch.cuda.synchronize()
+                    if torch.cuda.is_available():
+                        torch.cuda.synchronize()
                     stop_time = time.time()
 
                     if (this_profiler.profiling_on):
@@ -159,7 +160,8 @@ class Profiling(object):
                         idx -= 1
                         if (-idx) == len(this_profiler.record['backward']):
                             return
-                    torch.cuda.synchronize()
+                    if torch.cuda.is_available():
+                        torch.cuda.synchronize()
                     this_profiler.record['backward'][idx] = (this_profiler.record['backward'][idx][0],
                                                              this_profiler.record['backward'][idx][1],
                                                              this_profiler.record['backward'][idx][2],
