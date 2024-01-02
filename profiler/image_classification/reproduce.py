@@ -158,7 +158,7 @@ def profile_train(train_loader, model, criterion, optimizer):
     return layer_times, (sum(data_times) * 1000.0) / len(data_times)
 
 
-def main(model):
+def main(model, model_name):
 
     # Since AlexNet has a paralleled structure, the features should be processed for parallel training
     # model.features = torch.nn.DataParallel(model.features)
@@ -221,10 +221,10 @@ def main(model):
 
     # create grapth and persist it into file
     create_graph(model, train_loader, summary,
-                    os.path.join("profiles/", 'alexnet'))
+                    os.path.join("profiles/", model_name))
     print("...done!")
 
 if __name__ == '__main__':
-    main(AlexNet())
+    main(AlexNet(), 'alexnet')
 
     
