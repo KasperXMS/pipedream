@@ -96,8 +96,9 @@ def profile_train(train_loader, model, criterion, optimizer):
         data_time = time.time() - start_time
         data_time_meter.update(data_time)
         with torchprofiler.Profiling(model, module_whitelist=[]) as p:
-            input = input.cuda(non_blocking=True)
-            target = target.cuda(non_blocking=True)
+            if torch.cuda.is_available():
+                input = input.cuda(non_blocking=True)
+                target = target.cuda(non_blocking=True)
 
             # compute output
             output = model(input)
