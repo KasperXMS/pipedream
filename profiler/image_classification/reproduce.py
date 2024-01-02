@@ -184,7 +184,8 @@ def main():
     # collect model input
     print("Collecting profile...")
     for i, (model_input, _) in enumerate(train_loader):
-        model_input = model_input.cuda()
+        if torch.cuda.is_available():
+            model_input = model_input.cuda()
         if i >= 0:
             break
     
