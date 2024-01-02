@@ -158,12 +158,10 @@ def profile_train(train_loader, model, criterion, optimizer):
     return layer_times, (sum(data_times) * 1000.0) / len(data_times)
 
 
-def main():
+def main(model):
 
-    # build model -- AlexNet
-    model = AlexNet()
     # Since AlexNet has a paralleled structure, the features should be processed for parallel training
-    model.features = torch.nn.DataParallel(model.features)
+    # model.features = torch.nn.DataParallel(model.features)
     if torch.cuda.is_available():
         model.cuda()
 
@@ -227,6 +225,6 @@ def main():
     print("...done!")
 
 if __name__ == '__main__':
-    main()
+    main(AlexNet())
 
     
