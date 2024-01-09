@@ -31,6 +31,11 @@ def summary(model, module_whitelist, model_input, verbose, device="cuda"):
     mapping = {}
     def register_hook(module):
         def hook(module, input, output):
+            # Additional code
+            # set every ReLU block's inplace=False, to prevent backward hooking issues.
+            if isinstance(module, nn.ReLU):
+                module.__init__(inplace=False)
+
             class_name = str(module.__class__).split('.')[-1].split("'")[0]
             module_idx = len(summary)
 

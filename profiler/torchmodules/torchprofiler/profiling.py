@@ -119,7 +119,7 @@ class Profiling(object):
                 #
                 self.hook_modules(sub_module)
             else:
-                sub_module.reset_hooks()
+                # sub_module.reset_hooks()
                 #
                 # Hook nn.Module with no descendants.
                 #
@@ -166,8 +166,8 @@ class Profiling(object):
                                                              this_profiler.record['backward'][idx][1],
                                                              this_profiler.record['backward'][idx][2],
                                                              time.time())
-                sub_module.register_backward_pre_hook(backward_pre_hook)
-                sub_module.register_backward_hook(backward_post_hook)
+                sub_module.register_full_backward_pre_hook(backward_pre_hook)
+                sub_module.register_full_backward_hook(backward_post_hook)
 
     def unhook_modules(self, module):
         sub_modules = module.__dict__['_modules']
@@ -185,5 +185,5 @@ class Profiling(object):
                 #
                 self.unhook_modules(sub_module)
             else:
-                sub_module.reset_hooks()
+                # sub_module.reset_hooks()
                 sub_module.forward = self.forward_original_methods[sub_module]

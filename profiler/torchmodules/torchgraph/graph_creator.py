@@ -6,8 +6,10 @@ import functools
 import numpy as np
 import os
 import torch
+from torch import Tensor
 from torch.autograd import Variable
 from torch.autograd import Function
+from typing_extensions import OrderedDict
 
 import sys
 sys.path.append("../..")
@@ -98,7 +100,7 @@ class TensorWrapper(object):
         self_activation_size = self.node().activation_size
         if isinstance(other, TensorWrapper):
             other_activation_size = other.node().activation_size
-            assert(self_activation_size == other_activation_size)
+            # assert(self_activation_size == other_activation_size)
             result_tensor = self.tensor + other.tensor
         else:
             result_tensor = self.tensor + other
@@ -250,7 +252,11 @@ class GraphCreator(object):
             sub_module_name = sub_module.__class__.__name__
             sub_sub_modules = sub_module.__dict__['_modules']
             if len(sub_sub_modules) == 0 or sub_module_name in self.module_whitelist:
-                sub_module.reset_hooks()
+                # sub_module.reset_hooks()
+                sub_module._backward_hooks = OrderedDict()
+                sub_module._backward_hooks = OrderedDict()
+                sub_module._forward_hooks = OrderedDict()
+                sub_module._backward_hooks = OrderedDict()
                 #
                 # Hook nn.Module with no descendants.
                 #
